@@ -4,7 +4,7 @@ import dash_table as table
 
 # Index page
 
-main_index = [html.H1("INDEX"), dcc.Ta]
+main_index = [html.H1("INDEX"), table.DataTable()]
 
 # Character view
 

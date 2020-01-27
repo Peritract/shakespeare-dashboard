@@ -65,3 +65,11 @@ def load_macbeth():
     # Return the finished dataframe
 
     return clean_macbeth(macbeth)
+
+
+def create_token_column(col):
+    """
+    Creates a cleaned and tokenised column
+    based on a sentence column in a dataframe
+    """
+    return col
