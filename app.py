@@ -2,14 +2,61 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
+from dash.dependencies import Input, Output
+
 from source_plays import load_macbeth
+
+from layouts import main_index, character_page, noPage
 
 macbeth = load_macbeth()
 
 app = app = dash.Dash(__name__)
 
-app.layout = html.Div(children=[html.H1("Macbeth"),
-                                html.P("macbeth")])
+app.index_string = '''
+<!DOCTYPE html>
+<html>
+    <head>
+        {%metas%}
+        <title>Shakespeare Dashboard</title>
+        {%favicon%}
+        {%css%}
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+        <div>Shakespeare Dashboard</div>
+    </body>
+</html>
+'''
+
+# Placeholder structure
+
+app.layout = html.Div([
+    dcc.Location(id='url', refresh=False),
+    html.Div(id='page-content')
+])
+
+# Callback to control the page layout
+
+@app.callback(Output('page-content', 'children'),
+              [Input('url', 'pathname')])
+def display_page(pathname):
+    """
+    Return the appropriate page layout based on the url.
+    """
+    if pathname == '/':
+        return main_index
+    elif pathname == "/character":
+        return character_page
+    else:
+        return noPage
+
+
+# Run the server
 
 if __name__ == '__main__':
     app.run_server(debug=True)

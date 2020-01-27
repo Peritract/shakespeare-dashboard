@@ -31,6 +31,10 @@ def clean_macbeth(df):
 
     df.replace("_Tiger", "Tiger", inplace=True)
 
+    # Reset the index
+
+    df.reset_index(inplace=True, drop=True)
+
     return df
 
 
