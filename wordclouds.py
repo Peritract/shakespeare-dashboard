@@ -1,6 +1,7 @@
 from wordcloud import WordCloud  # Create wordclouds
-import plotly.graph_objs as go  # Make it plotly-compatible
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer  # Create DTMs
+import io  # Write to a buffer, not a file
+import base64  # Encode data as a uri
 
 
 def prepare_wordcloud_dict(col):
@@ -35,52 +36,33 @@ def create_wordcloud(col):
     """
 
     # Create a dict from the dataframe
+
     term_dict = prepare_wordcloud_dict(col)
 
-    wc = WordCloud(width=800, height=300, colormap="Reds",
-                   max_words=100)
+    # Generate a wordcloud
+
+    wc = WordCloud(colormap="Reds", max_words=100)
 
     wc.generate_from_frequencies(term_dict)
 
-    word_list = []
-    freq_list = []
-    fontsize_list = []
-    position_list = []
-    orientation_list = []
-    color_list = []
+    # Write the cloud to the buffer as an image
 
-    for (word, freq), fontsize, position, orientation, color in wc.layout_:
-        word_list.append(word)
-        freq_list.append(freq)
-        fontsize_list.append(fontsize)
-        position_list.append(position)
-        orientation_list.append(orientation)
-        color_list.append(color)
+    image = wc.to_image()
 
-    # get the positions
-    x = []
-    y = []
-    for i in position_list:
-        x.append(i[0])
-        y.append(i[1])
+    byte_io = io.BytesIO()
 
-    # get the relative occurence frequencies
-    new_freq_list = []
-    for i in freq_list:
-        new_freq_list.append(i*100)
-    new_freq_list
+    image.save(byte_io, 'PNG')
 
-    trace = go.Scatter(x=x, y=y,
-                       textfont=dict(size=new_freq_list,
-                                     color=color_list),
-                       mode="text",
-                       text=word_list)
+    # Pull the image out of the buffer and encode it as a data_uri
 
-    layout = go.Layout({'xaxis': {'showgrid': False, 'showticklabels': False,
-                                  'zeroline': False},
-                        'yaxis': {'showgrid': False, 'showticklabels': False,
-                                  'zeroline': False}})
+    byte_io.seek(0)
 
-    fig = go.Figure(data=[trace], layout=layout)
+    data_uri = base64.b64encode(byte_io.getvalue()).decode('utf-8').replace('\n', '')
 
-    return fig
+    # Create a data string that can be passed to an html object
+
+    src = 'data:image/png;base64,{0}'.format(data_uri)
+
+    # Return the source string
+
+    return src

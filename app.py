@@ -28,7 +28,6 @@ app.index_string = '''
             {%scripts%}
             {%renderer%}
         </footer>
-        <div>Shakespeare Dashboard</div>
     </body>
 </html>
 '''

@@ -1,16 +1,14 @@
 import dash_core_components as dcc
 import dash_html_components as html
-import dash_table as table
 from wordclouds import create_wordcloud
 
 
 def index_page(data):
-    """Returns the html layout of the index page
     """
-
-    main_index = [html.H1("INDEX"), dcc.Graph(
-            id='wordcloud-figure',
-            figure=create_wordcloud(data["tokens"]))]
+    Returns the html layout of the index page
+    """
+    main_index = [html.H1("INDEX"),
+                  html.Img(src=create_wordcloud(data["tokens"]))]
 
     return main_index
 
