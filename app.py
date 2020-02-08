@@ -50,7 +50,7 @@ def display_page(pathname):
     if pathname == '/':
         return index_page(macbeth)
     elif pathname == "/character":
-        return character_page
+        return character_page(macbeth)
     else:
         return noPage
 
