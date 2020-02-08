@@ -5,6 +5,8 @@ from parse_play_text import (separate_sentences,
                              remove_in_line_stage_directions,
                              create_play_data_frame)
 
+from create_tokens import create_token_column
+
 
 def clean_macbeth(df):
     """
@@ -62,14 +64,14 @@ def load_macbeth():
 
     macbeth = create_play_data_frame(sentences)
 
+    # Clean the dataframe
+
+    macbeth = clean_macbeth(macbeth)
+
+    # Add a token column
+
+    macbeth["tokens"] = create_token_column(macbeth["sentence"])
+
     # Return the finished dataframe
 
-    return clean_macbeth(macbeth)
-
-
-def create_token_column(col):
-    """
-    Creates a cleaned and tokenised column
-    based on a sentence column in a dataframe
-    """
-    return col
+    return macbeth

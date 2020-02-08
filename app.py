@@ -6,7 +6,7 @@ from dash.dependencies import Input, Output
 
 from source_plays import load_macbeth
 
-from layouts import main_index, character_page, noPage
+from layouts import index_page, character_page, noPage
 
 macbeth = load_macbeth()
 
@@ -49,7 +49,7 @@ def display_page(pathname):
     Return the appropriate page layout based on the url.
     """
     if pathname == '/':
-        return main_index
+        return index_page(macbeth)
     elif pathname == "/character":
         return character_page
     else:
