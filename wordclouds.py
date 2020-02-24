@@ -41,7 +41,7 @@ def create_wordcloud(col):
 
     # Generate a wordcloud
 
-    wc = WordCloud(colormap="Reds", max_words=100)
+    wc = WordCloud(colormap="Reds", max_words=100, width=800, height=400)
 
     wc.generate_from_frequencies(term_dict)
 
